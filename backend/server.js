@@ -52,10 +52,10 @@ app.get('/', (req, res) => {
     version: '1.0.0',
     status: 'running',
     endpoints: {
-      auth: '/auth/salesforce',
-      callback: '/auth/callback',
-      status: '/auth/status',
-      logout: '/auth/logout',
+      auth: '/api/auth/salesforce',
+      callback: '/api/auth/callback',
+      status: '/api/auth/status',
+      logout: '/api/auth/logout',
       validationRules: '/api/validation-rules',
       toggleRule: '/api/toggle-rule',
       toggleAll: '/api/toggle-all',
@@ -65,7 +65,7 @@ app.get('/', (req, res) => {
   });
 });
 
-app.use('/auth', authRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/api', apiRoutes);
 
 // 404 handler
