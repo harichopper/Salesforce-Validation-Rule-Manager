@@ -14,6 +14,9 @@ const apiRoutes = require('./routes/apiRoutes');
 
 const app = express();
 
+// Trust proxy for Vercel/proxies
+app.set('trust proxy', 1);
+
 // ─── MIDDLEWARE ───────────────────────────────────────────────
 app.use(morgan('dev'));
 app.use(express.json());

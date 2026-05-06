@@ -38,8 +38,10 @@ exports.callback = async (req, res, next) => {
 
     logger.success('OAuth callback successful, session created');
 
-    // Redirect to frontend dashboard
-    res.redirect(`${config.frontendUrl}/dashboard`);
+    // Redirect to frontend dashboard — use relative path for Vercel compatibility
+    // If FRONTEND_URL is set, use it; otherwise fallback to relative
+    const redirectUrl = config.nodeEnv === 'production' ? '/dashboard' : `${config.frontendUrl}/dashboard`;
+    res.redirect(redirectUrl);
   } catch (err) {
     logger.error('OAuth callback failed:', err.message);
     res.redirect(`${config.frontendUrl}/login?error=auth_failed`);
