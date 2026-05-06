@@ -12,6 +12,11 @@
     <img src="https://img.shields.io/badge/Backend-Node.js%20%2B%20Express-339933?style=for-the-badge&logo=node.js" alt="Node" />
     <img src="https://img.shields.io/badge/Styling-TailwindCSS%20%2B%20Framer-38B2AC?style=for-the-badge&logo=tailwind-css" alt="Tailwind" />
     <img src="https://img.shields.io/badge/Salesforce-JSForce-00A1E0?style=for-the-badge&logo=salesforce" alt="Salesforce" />
+    <img src="https://img.shields.io/badge/Deployment-Vercel-000000?style=for-the-badge&logo=vercel" alt="Vercel" />
+  </p>
+
+  <p align="center">
+    <a href="https://salesforce-validation-rule-manager-seven.vercel.app/"><strong>Live Demo 🚀</strong></a>
   </p>
 </div>
 
@@ -24,6 +29,7 @@
 - 🔀 **One-Click Deployment** — Instant Metadata API updates with optimistic UI.
 - 🎨 **Futuristic UX** — Glassmorphism cards, neon gradients, and smooth Framer Motion transitions.
 - 📊 **Org Analytics** — Live monitoring of org health and validation rule status.
+- ☁️ **Serverless Ready** — Stateless architecture using `cookie-session` for reliable Vercel deployment.
 
 ---
 
@@ -35,6 +41,10 @@ graph TD
     B -->|OAuth 2.0| C[Salesforce Identity]
     B -->|Tooling API| D[Salesforce Metadata]
     B -->|Metadata API| D
+    subgraph Vercel Cloud
+    A
+    B
+    end
 ```
 
 ---
@@ -44,18 +54,21 @@ graph TD
 ### 1. Salesforce Connected App
 1.  **Setup** > **App Manager** > **New Connected App**.
 2.  **Name**: `SF Rule Manager`.
-3.  **Callback URL**: `http://localhost:3001/auth/callback`.
+3.  **Callback URL**: 
+    - Local: `http://localhost:3001/api/auth/callback`
+    - Prod: `https://your-app.vercel.app/api/auth/callback`
 4.  **Scopes**: `Full access`, `Perform requests at any time`.
 5.  **PKCE**: Ensure **"Require PKCE"** is **UNCHECKED**.
 
-### 2. Backend Configuration
+### 2. Environment Configuration
 Create `backend/.env`:
 ```env
 SF_CLIENT_ID=your_consumer_key
 SF_CLIENT_SECRET=your_consumer_secret
-SF_REDIRECT_URI=http://localhost:3001/auth/callback
+SF_REDIRECT_URI=http://localhost:3001/api/auth/callback
 SESSION_SECRET=a-secure-random-string
 FRONTEND_URL=http://localhost:5173
+NODE_ENV=development
 ```
 
 ### 3. Execution
@@ -73,7 +86,8 @@ cd frontend && npm run dev
 
 | Endpoint | Method | Purpose |
 | :--- | :--- | :--- |
-| `/auth/salesforce` | `GET` | Initiates OAuth 2.0 Flow |
+| `/api/auth/salesforce` | `GET` | Initiates OAuth 2.0 Flow |
+| `/api/auth/callback` | `GET` | Handles OAuth Redirection |
 | `/api/validation-rules`| `GET` | Fetches Account Rules |
 | `/api/deploy` | `POST`| Metadata API Deployment |
 | `/api/org-info` | `GET` | Connected Org Intelligence |
@@ -82,9 +96,10 @@ cd frontend && npm run dev
 
 ## 🛡️ Security Posture
 
-- **Session Security**: tokens are stored in `httpOnly`, `secure` cookies.
+- **Stateless Sessions**: Tokens are encrypted and stored in `httpOnly` client-side cookies via `cookie-session`.
 - **Middleware**: All API calls pass through an `authGuard` validation layer.
-- **Data Privacy**: No Salesforce credentials or customer data are persisted in any database.
+- **Proxy Protection**: Configured to trust Vercel's proxy layer for secure cookie handling.
+- **Data Privacy**: No Salesforce credentials or customer data are persisted in any server-side database.
 
 ---
 
