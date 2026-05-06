@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const session = require('express-session');
+const cookieSession = require('cookie-session');
 const morgan = require('morgan');
 
 const config = require('./config');
@@ -33,20 +33,16 @@ app.use(
   })
 );
 
-// Session
+// Session — using cookie-session for serverless persistence
 app.use(
-  session({
+  cookieSession({
+    name: 'sf_val_mgr_session',
     secret: config.sessionSecret,
-    resave: true,                 // Force session to be saved back to the session store
-    saveUninitialized: true,      // Force a session that is "uninitialized" to be saved to the store
-    name: 'sf_val_mgr_sid',       // Custom cookie name
-    cookie: {
-      secure: config.nodeEnv === 'production',
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24, // 24 hours
-      sameSite: 'lax',             // 'lax' is safer for same-domain deployments like Vercel Services
-      path: '/',                   // Ensure cookie is available for all paths
-    },
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    httpOnly: true,
+    secure: config.nodeEnv === 'production',
+    sameSite: 'lax',
+    path: '/',
   })
 );
 

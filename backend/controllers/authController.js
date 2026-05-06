@@ -59,13 +59,8 @@ exports.status = (req, res) => {
 
 // POST /auth/logout — destroy session and log out
 exports.logout = (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      logger.error('Session destruction error:', err.message);
-      return apiResponse.error(res, 'Logout failed', 500);
-    }
-    res.clearCookie('connect.sid');
-    logger.info('User logged out successfully');
-    return apiResponse.success(res, null, 'Logged out successfully');
-  });
+  req.session = null; // cookie-session way to destroy session
+  res.clearCookie('sf_val_mgr_session');
+  logger.info('User logged out successfully');
+  return apiResponse.success(res, null, 'Logged out successfully');
 };
