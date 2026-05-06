@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://img.icons8.com/fluency/96/salesforce.png" alt="SF Logo" width="80" height="80" />
+  <img src="https://www.vectorlogo.zone/logos/salesforce/salesforce-ar21.svg" alt="Salesforce Logo" width="240" />
   <h1>🚀 Salesforce Validation Rule Manager</h1>
   <p align="center">
     <strong>An ultra-modern, production-ready full-stack suite for managing Salesforce validation rules.</strong>
