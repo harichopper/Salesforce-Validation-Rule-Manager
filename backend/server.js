@@ -52,21 +52,21 @@ app.get('/', (req, res) => {
     version: '1.0.0',
     status: 'running',
     endpoints: {
-      auth: '/api/auth/salesforce',
-      callback: '/api/auth/callback',
-      status: '/api/auth/status',
-      logout: '/api/auth/logout',
-      validationRules: '/api/validation-rules',
-      toggleRule: '/api/toggle-rule',
-      toggleAll: '/api/toggle-all',
-      deploy: '/api/deploy',
-      orgInfo: '/api/org-info',
+      auth: '/auth/salesforce',
+      callback: '/auth/callback',
+      status: '/auth/status',
+      logout: '/auth/logout',
+      validationRules: '/validation-rules',
+      toggleRule: '/toggle-rule',
+      toggleAll: '/toggle-all',
+      deploy: '/deploy',
+      orgInfo: '/org-info',
     },
   });
 });
 
-app.use('/api/auth', authRoutes);
-app.use('/api', apiRoutes);
+app.use('/auth', authRoutes);
+app.use('/', apiRoutes);
 
 // 404 handler
 app.use((req, res) => {
