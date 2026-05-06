@@ -11,8 +11,10 @@ export function AuthProvider({ children }) {
 
   const checkAuth = useCallback(async () => {
     try {
+      console.log('Checking authentication status...');
       const res = await getAuthStatus();
       const isAuth = res.data?.data?.authenticated;
+      console.log('Auth status:', isAuth);
       setAuthenticated(isAuth);
 
       if (isAuth) {

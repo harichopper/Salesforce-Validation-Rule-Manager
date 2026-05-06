@@ -37,13 +37,15 @@ app.use(
 app.use(
   session({
     secret: config.sessionSecret,
-    resave: false,
-    saveUninitialized: false,
+    resave: true,                 // Force session to be saved back to the session store
+    saveUninitialized: true,      // Force a session that is "uninitialized" to be saved to the store
+    name: 'sf_val_mgr_sid',       // Custom cookie name
     cookie: {
       secure: config.nodeEnv === 'production',
       httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 4, // 4 hours
-      sameSite: config.nodeEnv === 'production' ? 'none' : 'lax',
+      maxAge: 1000 * 60 * 60 * 24, // 24 hours
+      sameSite: 'lax',             // 'lax' is safer for same-domain deployments like Vercel Services
+      path: '/',                   // Ensure cookie is available for all paths
     },
   })
 );
